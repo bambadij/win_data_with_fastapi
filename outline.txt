@@ -20,7 +20,7 @@ Data Preparation
 Modeling & Evaluation
     1. Train Model
         1.Train Model 1 - K-Nearest Neighbour (Distance model)
-        2.Train Model 2 - Logistic Regression (Gradient Descent)
+        2.Train Model 2 - 0000Logistic Regression (Gradient Descent)
         3.Train Model 3 - Decision Tree (Decision Tree)
     2. Persit Model
 
