@@ -1,7 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,HTTPException,Response
 import joblib
 from  pydantic import BaseModel
 import pandas as pd
+import uvicorn
 #load pipeline
 pipeline =joblib.load('toolkit/pipeline.joblib')
 encoder =joblib.load('toolkit/encoder.joblib')
@@ -37,6 +38,17 @@ def appinfo():
 
 @app.post('/predict_grade')
 def predict_wine_grade(wine_features:WineFeatures):
-    df = pd.DataFrame()
-    prediction = pipeline.predict(df)[0]
-    return {'prediction':prediction}
+    
+    try:
+        df = pd.DataFrame([wine_features.model_dump()])
+        prediction = pipeline.predict(df)
+        
+        decoder_prediction = encoder.inverse_transform([prediction])[0]
+        
+        return {'prediction':decoder_prediction}
+    
+    except Exception as e:
+        raise HTTPException(status_code=500,detail=f'this is a server error contact administrator {str(e)}') 
+
+# if __name__ == '__main__': 
+#     uvicorn.run(app)
